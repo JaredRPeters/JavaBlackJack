@@ -33,7 +33,7 @@ public class Player extends JFrame{
 		            System.out.println(player.getWidth() > prefferedWidth);
 		            if (player.getWidth() > prefferedWidth) {
 		            	player.setResizable(false);
-		            	player.setPreferredSize(new Dimension(prefferedWidth, player.getHeight()));
+		            	player.setSize(new Dimension(prefferedWidth, player.getHeight()));
 		            	player.setResizable(true);
 		            }
 		        }
