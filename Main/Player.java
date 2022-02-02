@@ -1,42 +1,44 @@
-package main;
+package blackJack;
+
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.Component;
-import java.awt.Dimension;
-
 public class Player extends JFrame{
-	private static final long serialVersionUID = 1L;
 	
+	ArrayList<Card> hand = new ArrayList<Card>();	
 	String name;
+	int currentScore = 0;
+	boolean busted = false;
+	
+	int preferedWidth = 500;
+	int preferedHeight = 500;
 	
 	Player(String name) {
 		this.name = name;
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setTitle(name);
+		setSize(500, 500);
+		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
 	}
 	
-	public static void main(String[] args) {
-		
-		int prefferedWidth = 500;
-		int prefferedHeight = 500;
-		
-		Player player = new Player("Player 1");
-		
-		player.addComponentListener (new ComponentAdapter() 
-		{  
-		        public void componentResized(ComponentEvent evt) {
-		            Component c = (Component)evt.getSource();
-		            System.out.println(player.getWidth());
-		            System.out.println(player.getWidth() > prefferedWidth);
-		            if (player.getWidth() > prefferedWidth) {
-		            	player.setResizable(false);
-		            	player.setSize(new Dimension(prefferedWidth, player.getHeight()));
-		            	player.setResizable(true);
-		            }
-		        }
-		});
+	void giveCard(Card card) {
+		hand.add(card);
+		card.setSize(100, 100);
+		card.setLocation(1, 10 * hand.indexOf(card) + 1);
+		add(card);
+		System.out.println(name + " gained " + card.val + card.suit);
+		currentScore = 0;
+		for (Card c : hand) {
+			currentScore += c.val;
+		}
+		if (currentScore > 21) {
+			busted = true;
+			System.out.println(name + " busted with " + currentScore);
+		} else if (currentScore == 21) {
+			System.out.println("Victory for " + name);
+		}
 	}
 }
