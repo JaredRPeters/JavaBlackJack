@@ -1,4 +1,4 @@
-package blackJack;
+package main;
 
 import java.awt.Font;
 
@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 
 public class Card extends JPanel{
 	
+	String[] above10 = {"Jack", "Queen", "King"};
+	
 	int val;
 	String suit;
 	
@@ -14,9 +16,16 @@ public class Card extends JPanel{
 		this.val = val;
 		this.suit = suit;
 		
-		JLabel label = new JLabel(val + " of " + suit);
-		label.setFont(new Font("Verdana",1,10));
-		add(label);
+		JLabel cardVal;
+		
+		if (val > 10) {
+			cardVal = new JLabel(above10[val-11] + " of " + suit);
+		} else {
+			cardVal = new JLabel(val + " of " + suit);
+		}
+		cardVal.setFont(new Font("Verdana",1,10));
+		setSize(100, 100);
+		add(cardVal);
 	}
 	
 	
