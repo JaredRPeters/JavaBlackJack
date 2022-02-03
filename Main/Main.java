@@ -1,19 +1,26 @@
-package main;
-
-import java.util.Scanner;
+package blackJack;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.JFrame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.awt.Graphics;
 
 public class Main extends JFrame implements KeyListener{
-
-	static Scanner sc = new Scanner(System.in);
+	
+	static Random rand = new Random();
 	
 	static ArrayList<Card> deck = new ArrayList<Card>();
+	
+	static ArrayList<Player> players = new ArrayList<Player>();
+	
+	Main() {
+		addKeyListener(this);
+	}
 	
 	public static void main(String[] args) {
 		
@@ -26,17 +33,12 @@ public class Main extends JFrame implements KeyListener{
 		
 		makeDeck();
 		
-		Player player1 = new Player("Player 1");
+		players.add(new Player("Player 1"));
 		
-		
-		sc.nextLine();
-		giveCard(player1, deck.get(9));
-		sc.nextLine();
-		giveCard(player1, deck.get(10));
 	}
 	
 	static void makeDeck() {
-		for (int i = 1; i <= 56; i ++) {
+		for (int i = 1; i <= 52; i ++) {
 			if (i < 14) {
 				deck.add(new Card(i, "Spades"));
 			} else if (i < 27) {
@@ -58,12 +60,18 @@ public class Main extends JFrame implements KeyListener{
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+		if (e.getKeyChar() == KeyEvent.VK_SPACE) {
+			giveCard(players.get(0), deck.get(rand.nextInt(deck.size())));
+		} else if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 	}
 
 	@Override
