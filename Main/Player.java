@@ -41,42 +41,44 @@ public class Player extends JFrame{
 		add(currentVals);
 	}
 	
-	void giveCard(Card card) {
-		
-		Thread alterName = new Thread(() -> {
-			while(!busted) {
-				setTitle(name);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+	Boolean giveCard(Card card) {
+		if (!busted) {
+			Thread alterName = new Thread(() -> {
+				while(!busted) {
+					setTitle(name);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					setTitle("!!Hit 21!!");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-				setTitle("!!Hit 21!!");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			});
+			
+			hand.add(card);
+			card.setLocation(1, 30 * hand.indexOf(card) + 1);
+			
+			add(card);
+			currentScore += card.val;
+			
+			currentScoreLabel.setText("Current Score: " + String.valueOf(currentScore));
+			
+			revalidate();
+			
+			if (currentScore > 21) {
+				busted = true;
+				alterName.interrupt();
+				setTitle("Busted");
+			} else if (currentScore == 21) {
+				alterName.start();
 			}
-		});
-		
-		hand.add(card);
-		card.setLocation(1, 30 * hand.indexOf(card) + 1);
-		
-		add(card);
-		currentScore += card.val;
-		
-		currentScoreLabel.setText("Current Score: " + String.valueOf(currentScore));
-		
-		revalidate();
-		
-		if (currentScore > 21) {
-			busted = true;
-			alterName.interrupt();
-			setTitle("Busted");
-		} else if (currentScore == 21) {
-			alterName.start();
+			return true;
 		}
-
+		return false;
 	}
 }
