@@ -18,6 +18,8 @@ public class Main extends JFrame implements KeyListener{
 	static ArrayList<Card> deck = new ArrayList<Card>();
 	
 	static ArrayList<Player> players = new ArrayList<Player>();
+
+	int turn = 0;
 	
 	Main() {
 		addKeyListener(this);
@@ -36,6 +38,7 @@ public class Main extends JFrame implements KeyListener{
 		
 		players.add(new Player("Player 1"));
 		players.add(new Player("Winner?"));
+		players.add(new Player("Mike"));
 		
 		main.toFront();
 		main.requestFocus();
@@ -56,9 +59,13 @@ public class Main extends JFrame implements KeyListener{
 		}
 	}
 	
-	static void giveCard(Player player, Card card) {
-		player.giveCard(card);
+	static Boolean takeTurn(Player player) {
+		return giveCard(player, deck.get(rand.nextInt(deck.size())));
+	}
+	
+	static Boolean giveCard(Player player, Card card) {
 		deck.remove(deck.indexOf(card));
+		return player.giveCard(card);
 	}
 
 	@Override
@@ -74,8 +81,10 @@ public class Main extends JFrame implements KeyListener{
 		
 		if (e.getKeyChar() == KeyEvent.VK_SPACE) {
 			if (deck.size() > 0) {
-				giveCard(players.get(0), deck.get(rand.nextInt(deck.size())));
-				giveCard(players.get(1), deck.get(rand.nextInt(deck.size())));
+				while(!takeTurn(players.get(turn % players.size()))) {
+					turn++;
+				}
+				turn++;
 			}
 		} else if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
 			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
