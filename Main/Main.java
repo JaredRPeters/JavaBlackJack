@@ -8,10 +8,11 @@ import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.awt.Graphics;
+//import java.awt.Graphics;
 
 public class Main extends JFrame implements KeyListener{
-	
+	private static final long serialVersionUID = 1L;
+
 	static Random rand = new Random();
 	
 	static ArrayList<Card> deck = new ArrayList<Card>();
@@ -34,6 +35,10 @@ public class Main extends JFrame implements KeyListener{
 		makeDeck();
 		
 		players.add(new Player("Player 1"));
+		players.add(new Player("Winner?"));
+		
+		main.toFront();
+		main.requestFocus();
 		
 	}
 	
@@ -68,7 +73,10 @@ public class Main extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 		if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-			giveCard(players.get(0), deck.get(rand.nextInt(deck.size())));
+			if (deck.size() > 0) {
+				giveCard(players.get(0), deck.get(rand.nextInt(deck.size())));
+				giveCard(players.get(1), deck.get(rand.nextInt(deck.size())));
+			}
 		} else if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
 			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
