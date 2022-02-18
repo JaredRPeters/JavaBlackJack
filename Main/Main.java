@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-//import java.awt.Graphics;
 
 public class Main extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1L;
@@ -19,10 +21,23 @@ public class Main extends JFrame implements KeyListener{
 	
 	static ArrayList<Player> players = new ArrayList<Player>();
 
-	int turn = 0;
+	static int turn = 0;
+	
+	JLabel currentAction;
+	String currentActionStr = "None";
 	
 	Main() {
 		addKeyListener(this);
+		
+		
+		JPanel currentThing = new JPanel();
+		currentAction = new JLabel("Current Action: " + currentActionStr);
+		currentAction.setFont(new Font("Verdana",1,10));
+		currentThing.add(currentAction);
+		currentThing.setSize(200, 100);
+		currentThing.setLocation(200, 200);
+		
+		add(currentThing);
 	}
 	
 	public static void main(String[] args) {
@@ -39,6 +54,16 @@ public class Main extends JFrame implements KeyListener{
 		players.add(new Player("Player 1"));
 		players.add(new Player("Winner?"));
 		players.add(new Player("Mike"));
+		players.add(new Player("Four"));
+//		players.add(new Player("Five"));
+		
+		int i = 0;
+		for (Player p : players) {
+			p.setLocation(500*i, 520);
+			p.giveCard(deck.get(rand.nextInt(deck.size())));
+			p.giveCard(deck.get(rand.nextInt(deck.size())));
+			i++;
+		}
 		
 		main.toFront();
 		main.requestFocus();
@@ -59,18 +84,39 @@ public class Main extends JFrame implements KeyListener{
 		}
 	}
 	
-	static Boolean takeTurn(Player player) {
-		return giveCard(player, deck.get(rand.nextInt(deck.size())));
-	}
+	
 	
 	static Boolean giveCard(Player player, Card card) {
-		deck.remove(deck.indexOf(card));
-		return player.giveCard(card);
+		if (player.giveCard(card)) {
+			deck.remove(deck.indexOf(card));
+			return true;
+		}
+		return false;
+	}
+	
+	static void CommitAction(String action) {
+		if (action.equals("Hit")) {
+			if (deck.size() > 0) {
+				int attempt = 0;
+				while(!giveCard(players.get(turn % players.size()), deck.get(rand.nextInt(deck.size())))) {
+					attempt++;
+					if (attempt == players.size()) break;
+					turn++;
+				}
+				turn++;
+			}
+		} else if (action.equals("Pass")) {
+			while(players.get(turn % players.size()).passed || players.get(turn % players.size()).busted) {
+				turn++;
+			}
+			players.get(turn % players.size()).passed = true;
+			players.get(turn % players.size()).setTitle("Passed");
+			turn++;
+		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 		
 	}
@@ -79,16 +125,20 @@ public class Main extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+		System.out.println("KeyCode: " + e.getKeyCode());
+		
 		if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-			if (deck.size() > 0) {
-				while(!takeTurn(players.get(turn % players.size()))) {
-					turn++;
-				}
-				turn++;
-			}
+			CommitAction(currentActionStr);
 		} else if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
 			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		} else if (e.getKeyChar() == 'h') {
+			currentActionStr = "Hit";
+		} else if (e.getKeyChar() == 'p') {
+			currentActionStr = "Pass";
 		}
+		
+		currentAction.setText("Current Action: " + currentActionStr);
+		revalidate();
 	}
 
 	@Override
