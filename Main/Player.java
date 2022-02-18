@@ -70,15 +70,15 @@ public class Player extends JFrame{
 	
 	Boolean giveCard(Card card) {
 		
-//		if (passed) {
-//			revalidate();
-//			return false;
-//		}
-//		
-//		if (!busted && !hit21) {
-//			revalidate();
-//			return false;
-//		}
+		if (passed) {
+			revalidate();
+			return false;
+		}
+		
+		if (!busted && !hit21) {
+			revalidate();
+			return false;
+		}
 		
 		hand.add(card);
 		card.setLocation(card.cardWidth * hand.indexOf(card), this.getHeight() - (int)(card.cardHeight*(1.3f)));
