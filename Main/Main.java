@@ -88,7 +88,6 @@ public class Main extends JFrame implements KeyListener{
 	
 	static Boolean giveCard(Player player, Card card) {
 		if (player.giveCard(card)) {
-			System.out.println("Gave player " + player.name + " the card " + card.val + " of " + card.suit);
 			deck.remove(deck.indexOf(card));
 			return true;
 		}
