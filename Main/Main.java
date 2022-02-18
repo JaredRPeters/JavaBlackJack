@@ -60,8 +60,8 @@ public class Main extends JFrame implements KeyListener{
 		int i = 0;
 		for (Player p : players) {
 			p.setLocation(500*i, 520);
-			p.giveCard(deck.get(rand.nextInt(deck.size())));
-			p.giveCard(deck.get(rand.nextInt(deck.size())));
+			giveCard(p, deck.get(rand.nextInt(deck.size())));
+			giveCard(p, deck.get(rand.nextInt(deck.size())));
 			i++;
 		}
 		
@@ -88,6 +88,7 @@ public class Main extends JFrame implements KeyListener{
 	
 	static Boolean giveCard(Player player, Card card) {
 		if (player.giveCard(card)) {
+			System.out.println("Gave player " + player.name + " the card " + card.val + " of " + card.suit);
 			deck.remove(deck.indexOf(card));
 			return true;
 		}
