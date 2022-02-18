@@ -1,6 +1,8 @@
 package blackJack;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,29 +14,41 @@ public class Card extends JPanel{
 	int val;
 	String suit;
 	
+	public int cardWidth = 100;
+	public int cardHeight = 200;
+	
+	int borderDepth = 3;
+	
+	String cardVal;
+	
 	Card(int val, String suit) {
+		setSize(cardWidth, cardHeight);
+		
 		this.val = val;
 		this.suit = suit;
 		
-		JLabel cardVal;
-		
 		if (val > 10) {
-			cardVal = new JLabel(above10[val-11] + " of " + suit);
+			cardVal = above10[val-11] + " of " + suit;
 		} else if (val == 1){
-			cardVal = new JLabel("Ace of " + suit);
+			cardVal = "Ace of " + suit;
 		}else {
-			cardVal = new JLabel(val + " of " + suit);
+			cardVal = val + " of " + suit;
 		}
 		
 		if (this.val > 10) {
 			this.val = 10;
 		}
-		
-		cardVal.setFont(new Font("Verdana",1,10));
-		setSize(100, 100);
-		add(cardVal);
 	}
 	
-	
+	@Override
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, cardWidth, cardHeight);
+		g.setColor(Color.RED);
+		g.fillRect(borderDepth, borderDepth, cardWidth-borderDepth*2, cardHeight-borderDepth*2);
+		g.setColor(Color.BLACK);
+		g.drawString(cardVal, 4, cardHeight/2);
+	}
 	
 }
