@@ -51,7 +51,7 @@ public class Player extends JFrame{
 		setTitle(name);
 		setSize(500, 500);
 		setLocation(0, 520);
-		setResizable(false); 
+//		setResizable(false); 
 		setVisible(true);
 		getContentPane().setLayout(null);
 		
@@ -59,7 +59,7 @@ public class Player extends JFrame{
 		currentScoreLabel = new JLabel("Current Score: " + String.valueOf(currentScore));
 		currentScoreLabel.setFont(new Font("Verdana",1,10));
 		currentVals.add(currentScoreLabel);
-		currentVals.setSize(200, 100);
+		currentVals.setSize(200, 20);
 		currentVals.setLocation(200, 200);
 		add(currentVals);
 	}
@@ -70,12 +70,7 @@ public class Player extends JFrame{
 	
 	Boolean giveCard(Card card) {
 		
-		if (passed) {
-			revalidate();
-			return false;
-		}
-		
-		if (!busted && !hit21) {
+		if (busted || hit21 || passed) {
 			revalidate();
 			return false;
 		}
