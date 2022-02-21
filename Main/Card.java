@@ -1,14 +1,13 @@
 package blackJack;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Card extends JPanel{
-	
+	private static final long serialVersionUID = 1L;
+
 	String[] above10 = {"Jack", "Queen", "King"};
 	
 	int val;
