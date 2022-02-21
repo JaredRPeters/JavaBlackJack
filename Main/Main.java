@@ -44,12 +44,12 @@ public class Main extends JFrame implements KeyListener{
 		
 		Main main = new Main();
 		
+		makeDeck();
+		
 		main.setTitle("House");
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		main.setSize(1000, 500);
 		main.setVisible(true);
-		
-		makeDeck();
 		
 		players.add(new Player("Player 1"));
 		players.add(new Player("Winner?"));
@@ -67,7 +67,6 @@ public class Main extends JFrame implements KeyListener{
 		
 		main.toFront();
 		main.requestFocus();
-		
 	}
 	
 	static void makeDeck() {
@@ -89,6 +88,7 @@ public class Main extends JFrame implements KeyListener{
 	static Boolean giveCard(Player player, Card card) {
 		if (player.giveCard(card)) {
 			deck.remove(deck.indexOf(card));
+			System.out.println("Gave player: " + player.name + " the card " + card.val + " of " + card.suit);
 			return true;
 		}
 		return false;
